@@ -21,7 +21,7 @@ module.exports.accessChat = catchAsyncError(async (req, res, next) => {
     .populate("latestMessage");
 
   isChat = await User.populate(isChat, {
-    path: "latestMessage.sender",
+    path: "latestMessage.senderId",
     select: "name pic email",
   });
 
@@ -48,3 +48,22 @@ module.exports.accessChat = catchAsyncError(async (req, res, next) => {
   }
 });
 
+module.exports.fetchChats = catchAsyncError((req, res, next) => {
+  try {
+    Chat.find({ users: { $elemMatch: { $eq: req.id } } })
+      .populate("users")
+      .populate("groupAdmin")
+      .populate("latestMessage")
+      .sort({ updatedAt: -1 })
+      .then(async (results) => {
+        results = await User.populate(results, {
+          path: "latestMessage.senderId",
+          select: "name pic email",
+        });
+
+        res.json(results);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+});
