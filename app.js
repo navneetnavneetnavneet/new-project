@@ -6,15 +6,31 @@ const app = express();
 const logger = require("morgan");
 const ErrorHandler = require("./utils/ErrorHandler");
 const { generateErrors } = require("./middlewares/errors");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
 
 // db connection
 require("./config/db").connectDatabase();
 
+// body-parser
+app.use(express.urlencoded({ extended: true })); 
+app.use(express.json()); 
+
 // logger
 app.use(logger("tiny"));
 
+// session and cookie-parser
+app.use(
+  session({
+    resave: true,
+    saveUninitialized: true,
+    secret: process.env.EXPRESS_SESSION_SCERET,
+  })
+);
+app.use(cookieParser());
+
 // routes
-app.use("/api/users", require("./routes/indexRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
 
 // Error Handling
 app.all("*", (req, res, next) => {
