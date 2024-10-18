@@ -8,6 +8,7 @@ const ErrorHandler = require("./utils/ErrorHandler");
 const { generateErrors } = require("./middlewares/errors");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const cors = require("cors");
 
 // db connection
 require("./config/db").connectDatabase();
@@ -18,6 +19,9 @@ app.use(express.json());
 
 // logger
 app.use(logger("tiny"));
+
+// cors
+app.use(cors({origin: "http://localhost:5173", credentials: true}));
 
 // session and cookie-parser
 app.use(

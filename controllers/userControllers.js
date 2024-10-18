@@ -4,7 +4,6 @@ const User = require("../models/userModel");
 const { sendToken } = require("../utils/SendToken");
 
 module.exports.registerUser = catchAsyncError(async (req, res, next) => {
-  console.log(req.body);
   const { name, email, password, pic } = req.body;
 
   if (!name || !email || !password) {

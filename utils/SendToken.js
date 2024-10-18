@@ -6,7 +6,7 @@ module.exports.sendToken = (user, statusCode, res) => {
       Date.now() + 24 * 60 * 60 * 1000 + process.env.COOKIE_EXPIRE
     ),
     httpOnly: true,
-    // secure: true,
+    secure: true,
     sameSite: "None",
   };
 
