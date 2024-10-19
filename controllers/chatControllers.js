@@ -143,3 +143,22 @@ module.exports.addToGroup = catchAsyncError(async (req, res, next) => {
   }
 });
 
+module.exports.removeFromGroup = catchAsyncError(async (req, res, next) => {
+  try {
+    const { chatId, userId } = req.body;
+
+    const removed = await Chat.findByIdAndUpdate(
+      chatId,
+      {
+        $pull: { users: userId },
+      },
+      { new: true }
+    )
+      .populate("users")
+      .populate("groupAdmin");
+
+    res.status(200).json(removed);
+  } catch (error) {
+    console.log(error);
+  }
+});

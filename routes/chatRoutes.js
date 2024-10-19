@@ -20,6 +20,6 @@ router.post("/rename", isAuthenticated, renameGroup);
 
 router.get("/groupadd", isAuthenticated, addToGroup);
 
-// router.get("/groupremove", isAuthenticated, removeFromGroup);
+router.get("/groupremove", isAuthenticated, removeFromGroup);
 
 module.exports = router;
