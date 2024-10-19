@@ -104,3 +104,23 @@ module.exports.createGroupChat = catchAsyncError(async (req, res, next) => {
     console.log(error);
   }
 });
+
+module.exports.renameGroup = catchAsyncError(async (req, res, next) => {
+  try {
+    const { chatId, chatName } = req.body;
+
+    const updatedChat = await Chat.findByIdAndUpdate(
+      chatId,
+      { chatName },
+      { new: true }
+    )
+      .populate("users")
+      .populate("groupAdmin");
+
+    res.status(200).json(updatedChat);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+
