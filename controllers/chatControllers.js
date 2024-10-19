@@ -123,4 +123,23 @@ module.exports.renameGroup = catchAsyncError(async (req, res, next) => {
   }
 });
 
+module.exports.addToGroup = catchAsyncError(async (req, res, next) => {
+  try {
+    const { chatId, userId } = req.body;
+
+    const added = await Chat.findByIdAndUpdate(
+      chatId,
+      {
+        $push: { users: userId },
+      },
+      { new: true }
+    )
+      .populate("users")
+      .populate("groupAdmin");
+
+    res.status(200).json(added);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
