@@ -15,7 +15,7 @@ module.exports.sendToken = (user, statusCode, res) => {
     .cookie("token", token, options)
     .json({
       success: true,
-      id: user._id,
+      _id: user._id,
       token,
       name: user.name,
       pic: user.pic,
