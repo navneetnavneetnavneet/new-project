@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.post("/", isAuthenticated, sendMessage);
 
-// router.get("/:chatId", isAuthenticated, allMessages);
+router.get("/:chatId", isAuthenticated, allMessages);
 
 module.exports = router;

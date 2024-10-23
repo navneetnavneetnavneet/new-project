@@ -5,7 +5,7 @@ const User = require("../models/userModel");
 const Chat = require("../models/chatModel");
 
 module.exports.sendMessage = catchAsyncError(async (req, res, next) => {
-//   console.log(req.body);
+  //   console.log(req.body);
   const { content, chatId } = req.body;
 
   if (!content || !chatId) {
@@ -38,3 +38,12 @@ module.exports.sendMessage = catchAsyncError(async (req, res, next) => {
   }
 });
 
+module.exports.allMessages = catchAsyncError(async (req, res, next) => {
+  console.log(req.params);
+
+  const messages = await Message.find({ chat: req.params.chatId })
+    .populate("senderId", "name pic email")
+    .populate("chat");
+
+  res.status(200).json(messages);
+});
