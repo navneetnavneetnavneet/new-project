@@ -14,14 +14,14 @@ const cors = require("cors");
 require("./config/db").connectDatabase();
 
 // body-parser
-app.use(express.urlencoded({ extended: true })); 
-app.use(express.json()); 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // logger
 app.use(logger("tiny"));
 
 // cors
-app.use(cors({origin: "http://localhost:5173", credentials: true}));
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 // session and cookie-parser
 app.use(
@@ -45,6 +45,24 @@ app.all("*", (req, res, next) => {
 app.use(generateErrors);
 
 // create server
-app.listen(process.env.PORT || 3000, () => {
+const server = app.listen(process.env.PORT || 3000, () => {
   console.log(`Server running on port ${process.env.PORT || 3000}`);
+});
+
+const io = require("socket.io")(server, {
+  pingTimeout: 6000,
+  cors: {
+    origin: "http://localhost:5173",
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  socket.on("setup", (userData) => {
+    // console.log(userData._id);
+
+    socket.join(userData._id);
+    socket.emit("connected");
+  });
 });

@@ -39,7 +39,7 @@ module.exports.sendMessage = catchAsyncError(async (req, res, next) => {
 });
 
 module.exports.allMessages = catchAsyncError(async (req, res, next) => {
-  console.log(req.params);
+  // console.log(req.params);
 
   const messages = await Message.find({ chat: req.params.chatId })
     .populate("senderId", "name pic email")
